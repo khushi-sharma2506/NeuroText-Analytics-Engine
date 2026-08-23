@@ -14,7 +14,7 @@ from pypdf import PdfReader
 # Load the sentiment analysis model
 sentiment_model = pipeline(
     "sentiment-analysis",
-    model="distilbert-base-uncased-finetuned-sst-2-english",
+    model="philschmid/tiny-bert-sst2-distilled",
     truncation=True,
     max_length=512
 )

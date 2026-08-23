@@ -43,8 +43,29 @@ def get_tokens(text):
     try:
         response = requests.post(f"{API_URL}/tokens", json={"text": text}, timeout=30)
         response.raise_for_status()
-        tokens = response.json().get("tokens", [])
-        return f"Total Tokens: {len(tokens)}\n\n" + " | ".join(tokens)
+        data = response.json().get("tokens", {})
+        tokens = data.get("tokens", [])
+        punct_count = data.get("punctuation_count", 0)
+        return f"Total Tokens: {len(tokens)}\nPunctuation Count: {punct_count}\n\n" + " | ".join(tokens)
+    except Exception as e: return f"API Error: {e}"
+
+def get_lemmas(text):
+    if not text.strip(): return "Please enter some text."
+    try:
+        response = requests.post(f"{API_URL}/lemmatization", json={"text": text}, timeout=30)
+        response.raise_for_status()
+        lemmas = response.json()
+        return "\n".join([f"{l['word']} -> {l['lemma']}" for l in lemmas])
+    except Exception as e: return f"API Error: {e}"
+
+def get_ner(text):
+    if not text.strip(): return "Please enter some text."
+    try:
+        response = requests.post(f"{API_URL}/ner", json={"text": text}, timeout=30)
+        response.raise_for_status()
+        entities = response.json()
+        if not entities: return "No named entities found in this text."
+        return "\n".join([f"{e['word']} -> {e['label']} ({e['explanation']})" for e in entities])
     except Exception as e: return f"API Error: {e}"
 
 def remove_stopwords(text):
@@ -71,7 +92,7 @@ with gr.Blocks(title="NeuroText Analytics Engine") as demo:
     gr.Examples(
         examples=[
             ["I absolutely loved this movie."],
-            ["This was the worst experience of my life."],
+            ["Microsoft is building a new headquarters in Seattle, Washington."],
             ["The food was delicious. The service was extremely slow."],
             ["This product is not bad. I would happily purchase it again."],
             ["Hello! I am so incredibly excited to announce that our brand-new AI Toolkit was successfully launched in New York City on Monday.\nIt is a fantastic application that can analyze sentiments, identify parts of speech, and extract valuable tokens from PDF documents.\nHowever, I must admit that the initial setup was quite frustrating and a bit difficult to navigate.\nDespite the early challenges, the final product is definitely worth the effort.\nDo you agree?"]
@@ -92,6 +113,16 @@ with gr.Blocks(title="NeuroText Analytics Engine") as demo:
             pos_btn = gr.Button("Extract POS Tags")
             pos_out = gr.Textbox(label="Result", lines=10)
             pos_btn.click(get_pos, inputs=text_input, outputs=pos_out)
+
+        with gr.TabItem("🌱 Lemmatization"):
+            lemma_btn = gr.Button("Extract Lemmas")
+            lemma_out = gr.Textbox(label="Result", lines=10)
+            lemma_btn.click(get_lemmas, inputs=text_input, outputs=lemma_out)
+
+        with gr.TabItem("🏢 Named Entities (NER)"):
+            ner_btn = gr.Button("Extract Entities")
+            ner_out = gr.Textbox(label="Result", lines=10)
+            ner_btn.click(get_ner, inputs=text_input, outputs=ner_out)
             
         with gr.TabItem("🔠 Tokens"):
             token_btn = gr.Button("Tokenize Text")

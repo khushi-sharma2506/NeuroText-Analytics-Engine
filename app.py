@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from model import predict_sentiment, get_pos_tags, get_tokens, remove_stopwords
+from model import predict_sentiment, get_pos_tags, get_tokens, remove_stopwords, get_lemmas, get_ner
 
 app = FastAPI(
     title="NLP AI Toolkit API",
@@ -35,6 +35,14 @@ def pos_tagging(request: TextRequest):
 def tokenize(request: TextRequest):
     return {"tokens": get_tokens(request.text)}
 
+
+@app.post("/lemmatization")
+def lemmatize(request: TextRequest):
+    return get_lemmas(request.text)
+
+@app.post("/ner")
+def named_entities(request: TextRequest):
+    return get_ner(request.text)
 
 @app.post("/stopwords")
 def stopwords(request: TextRequest):

@@ -58,12 +58,47 @@ def predict_sentiment(text: str):
 
 def get_pos_tags(text: str):
     doc = nlp(text)
-    return [{"word": token.text, "pos": token.pos_, "tag": token.tag_, "explanation": spacy.explain(token.tag_)} for token in doc]
+    tags = []
+    for token in doc:
+        tags.append({
+            "word": token.text,
+            "pos": token.pos_,
+            "explanation": spacy.explain(token.pos_)
+        })
+    return tags
+
+
+def get_lemmas(text: str):
+    doc = nlp(text)
+    lemmas = []
+    for token in doc:
+        lemmas.append({
+            "word": token.text,
+            "lemma": token.lemma_
+        })
+    return lemmas
+
+
+def get_ner(text: str):
+    doc = nlp(text)
+    entities = []
+    for ent in doc.ents:
+        entities.append({
+            "word": ent.text,
+            "label": ent.label_,
+            "explanation": spacy.explain(ent.label_)
+        })
+    return entities
 
 
 def get_tokens(text: str):
     doc = nlp(text)
-    return [token.text for token in doc]
+    tokens = [token.text for token in doc]
+    punctuations = [token.text for token in doc if token.is_punct]
+    return {
+        "tokens": tokens,
+        "punctuation_count": len(punctuations)
+    }
 
 
 def remove_stopwords(text: str):

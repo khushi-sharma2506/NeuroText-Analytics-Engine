@@ -78,7 +78,7 @@ def remove_stopwords(text):
         return f"Cleaned Text:\n{data['cleaned_text']}\n\nTotal Stopwords Removed: {len(removed)}\nRemoved Stopwords: {', '.join(removed)}"
     except Exception as e: return f"API Error: {e}"
 
-with gr.Blocks(title="NeuroText Analytics Engine", theme=gr.themes.Glass(primary_hue="indigo", neutral_hue="slate")) as demo:
+with gr.Blocks(title="NeuroText Analytics Engine") as demo:
     gr.Markdown("# NeuroText Analytics Engine")
     gr.Markdown("A unified intelligence platform for analyzing, processing, and understanding text data.")
     

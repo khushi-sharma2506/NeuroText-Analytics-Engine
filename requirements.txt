@@ -5,3 +5,5 @@ transformers
 torch
 gradio
 requests
+spacy
+pypdf

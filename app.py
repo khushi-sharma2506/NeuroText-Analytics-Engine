@@ -1,19 +1,12 @@
-# Steps-
-# pip install -r requirements.txt
-# python -m uvicorn app:app --reload
-# python gradio.py
-
-
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from model import predict_sentiment
+from model import predict_sentiment, get_pos_tags, get_tokens, remove_stopwords
 
 app = FastAPI(
-    title="Sentiment Analysis API",
-    description="API for analyzing sentiment of text",
-    version="1.0.0"
+    title="NLP AI Toolkit API",
+    description="API for various NLP tasks including sentiment analysis, POS tagging, and preprocessing",
+    version="1.1.0"
 )
 
 
@@ -24,10 +17,30 @@ class TextRequest(BaseModel):
 @app.get("/")
 def home():
     return {
-        "message": "Sentiment Analysis API is running"
+        "message": "NLP AI Toolkit API is running"
     }
 
 
 @app.post("/predict")
 def predict(request: TextRequest):
     return predict_sentiment(request.text)
+
+
+@app.post("/pos")
+def pos_tagging(request: TextRequest):
+    return get_pos_tags(request.text)
+
+
+@app.post("/tokens")
+def tokenize(request: TextRequest):
+    return {"tokens": get_tokens(request.text)}
+
+
+@app.post("/stopwords")
+def stopwords(request: TextRequest):
+    return remove_stopwords(request.text)
+
+# Mount the Gradio UI onto the FastAPI app
+import gradio as gr
+from ui import demo
+app = gr.mount_gradio_app(app, demo, path="/")

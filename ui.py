@@ -1,7 +1,7 @@
 import gradio as gr
 import requests
 import os
-from model import extract_text_from_pdf
+from pdf_helper import extract_text_from_pdf
 
 API_PORT = os.getenv("PORT", "8000")
 API_URL = os.getenv("API_URL", f"http://127.0.0.1:{API_PORT}")
@@ -110,4 +110,5 @@ with gr.Blocks(title="NeuroText Analytics Engine") as demo:
     """)
 
 if __name__ == "__main__":
-    demo.launch()
+    port = int(os.getenv("PORT", 7860))
+    demo.launch(server_name="0.0.0.0", server_port=port)

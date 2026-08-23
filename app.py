@@ -39,8 +39,3 @@ def tokenize(request: TextRequest):
 @app.post("/stopwords")
 def stopwords(request: TextRequest):
     return remove_stopwords(request.text)
-
-# Mount the Gradio UI onto the FastAPI app
-import gradio as gr
-from ui import demo
-app = gr.mount_gradio_app(app, demo, path="/")

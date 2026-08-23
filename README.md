@@ -8,7 +8,9 @@ This project is a modular Natural Language Processing (NLP) toolkit built with P
 
 - **🎭 Sentiment Analysis**: Powered by Hugging Face Transformers. Provides overall text sentiment as well as a detailed line-by-line sentence breakdown (Positive/Negative) with confidence scores.
 - **🏷️ Part-of-Speech (POS) Tagging**: Uses `spacy` to break down sentences and identify grammatical structures (nouns, verbs, adjectives, etc.).
-- **🔠 Tokenization**: Extracts and separates individual words and punctuation marks for deep text processing.
+- **🌱 Lemmatization**: Extracts the core root dictionary form of every word (e.g., "running" becomes "run").
+- **🏢 Named Entity Recognition (NER)**: Instantly identifies People, Organizations, Locations, Dates, and more from the text.
+- **🔠 Tokenization**: Extracts and separates individual words while simultaneously counting total tokens and punctuation marks.
 - **🛑 Stopword Removal**: Cleans raw text by stripping out common, low-value words (like "the", "is", "at") to highlight important keywords.
 - **📄 PDF Support**: Upload any PDF file directly into the dashboard to automatically extract its text and run it through the NLP pipelines.
 
@@ -69,7 +71,9 @@ The FastAPI backend exposes the following REST endpoints for external applicatio
 
 - `POST /predict`: Analyzes sentiment. Returns overall sentiment and line-by-line breakdown.
 - `POST /pos`: Returns a list of words with their corresponding Part-of-Speech tags.
-- `POST /tokens`: Returns an array of text tokens.
+- `POST /lemmatization`: Returns the root dictionary form for each word.
+- `POST /ner`: Identifies and returns named entities (organizations, people, locations).
+- `POST /tokens`: Returns an array of text tokens and a punctuation count.
 - `POST /stopwords`: Returns the cleaned text and an array of the removed stopwords.
 
 ## 👨‍💻 Developed By

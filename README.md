@@ -31,8 +31,8 @@ graph TD
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YOUR-USERNAME/NLP-AI-Toolkit.git
-cd NLP-AI-Toolkit
+git clone https://github.com/khushi-sharma2506/NeuroText-Analytics-Engine.git
+cd NeuroText-Analytics-Engine
 ```
 
 2. Install the required dependencies:
